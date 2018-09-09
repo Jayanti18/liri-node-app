@@ -10,6 +10,7 @@ var spotify = new spotify(keys.spotify);
 var inputString = process.argv;
 var movieName = inputString[3];
 var liriReturn = inputString[2];
+var dates = inputString[4];
 
 
 // ***************
@@ -80,28 +81,25 @@ function spotifyThisSong(trackName) {
 // excute the function for Bands in town - Name of the venue, venue location, date of event (MM/DD/YYYY).
 function bandInTown(bandOrArtistName) {
   var bandOrArtistName = process.argv[3];
-
+  var request = require("request");
   
  var APP_ID="codingbotcamp"
   var bandsintown = require('bandsintown')(APP_ID);
-  var dates;
+  // var dates;
  
   // Run a request to the Band in Town Artist events API.
   var queryURL = "https://rest.bandsintown.com/artists/" + bandOrArtistName + "/event?app_id=codingbootcamp";
-  
-    bandsintown
-    .getArtistEventList(bandOrArtistName, dates)
+ 
+  bandsintown
+  .getArtistEventList(bandOrArtistName)
       .then(function(response) {
-    // If the request is successful
-    // if (!error && response.statusCode === 200) {
-
+    
 console.log(response);
 
 var bandResults =
-// "Artist Name: " + venue.name + "\n" +
-// "Name of the Venue:" + response.venue.place + "\n" +
-// "Venue location:" + response.venue.city + "\n" +
-"Date of the Event: " + response.formatted_datetime + "\n"  
+// "Name of the Venue: " + response.id + "\n" +
+// "Venue Location:" + response.venue.place + "\n" +
+"Date of the Event:" + response.formatted_datetime + "\n" +
 
 console.log(bandResults);
   });
@@ -112,6 +110,12 @@ console.log(bandResults);
 
 function movieThis(movieName) {
   var movieName = process.argv[3];
+  
+  // if user didn't enter movie name then move the movie name as Mr.Nobody as default.
+  if(process.argv[3] === undefined) {
+    movieName = 'Mr. Nobody';
+    console.log(movieName);
+  }
 
  var request = require("request");
 
@@ -124,7 +128,7 @@ function movieThis(movieName) {
   request(queryUrl, function (error, response, body) {
     // If the request is successful
     if (!error && response.statusCode === 200) {
-console.log(body);
+// console.log(body);
 
 var movieResults =
 "Title of the movie: " + JSON.parse(body).Title + "\n" +
