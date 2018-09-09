@@ -82,26 +82,22 @@ function spotifyThisSong(trackName) {
 function bandInTown(bandOrArtistName) {
   var bandOrArtistName = process.argv[3];
   var request = require("request");
-  
- var APP_ID="codingbotcamp"
-  var bandsintown = require('bandsintown')(APP_ID);
-  // var dates;
  
   // Run a request to the Band in Town Artist events API.
-  var queryURL = "https://rest.bandsintown.com/artists/" + bandOrArtistName + "/event?app_id=codingbootcamp";
- 
-  bandsintown
-  .getArtistEventList(bandOrArtistName)
-      .then(function(response) {
+  var queryURL = "https://rest.bandsintown.com/artists/" + bandOrArtistName + "/events?app_id=codingbootcamp";
+  request(queryURL, function (error, response, body) {
+    var showData = JSON.parse(body);
     
-console.log(response);
+for (var i = 0; i < showData.length; i++) {
 
 var bandResults =
-// "Name of the Venue: " + response.id + "\n" +
-// "Venue Location:" + response.venue.place + "\n" +
-"Date of the Event:" + response.formatted_datetime + "\n" +
+"-----------------------------------" + "\n" +
+"Name of venue: " + showData[i].venue.name + "\n" +
+"Venue Location: " + showData[i].venue.city + "\n" +
+"Date of the Event: " + showData[i].datetime + "\n"
 
 console.log(bandResults);
+}
   });
 };
 
