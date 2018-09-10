@@ -82,10 +82,12 @@ function spotifyThisSong(trackName) {
 function bandInTown(bandOrArtistName) {
   var bandOrArtistName = process.argv[3];
   var request = require("request");
+  var moment = require("moment");
  
   // Run a request to the Band in Town Artist events API.
   var queryURL = "https://rest.bandsintown.com/artists/" + bandOrArtistName + "/events?app_id=codingbootcamp";
   request(queryURL, function (error, response, body) {
+    if (!error) {
     var showData = JSON.parse(body);
     
 for (var i = 0; i < showData.length; i++) {
@@ -94,10 +96,14 @@ var bandResults =
 "-----------------------------------" + "\n" +
 "Name of venue: " + showData[i].venue.name + "\n" +
 "Venue Location: " + showData[i].venue.city + "\n" +
-"Date of the Event: " + showData[i].datetime + "\n"
+"Date of the Event: " + moment(showData[i].datetime).format('L') + "\n"
 
 console.log(bandResults);
 }
+} else {
+  console.log('Error has occurred : ' + error);
+  return;
+};
   });
 };
 
